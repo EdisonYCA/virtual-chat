@@ -7,14 +7,13 @@ import javafx.scene.control.TextField;
 
 public class HelloController {
     @FXML
-    private Label welcomeText;
+    private Label messageSent;
     @FXML
-    private Label test1;
-    @FXML
-    private Label test2;
+    private TextField messageField;
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    public void sendMessage() {
+        messageSent.setText(messageField.getText() + "\n");
+        messageField.setText("");
     }
 }
