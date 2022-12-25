@@ -1,15 +1,13 @@
 package com.example.virtual;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class HelloController {
+public class Controller {
     @FXML
     private VBox messageDisplay;
     @FXML
