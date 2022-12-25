@@ -26,7 +26,7 @@ public class Client {
             this.chatWindow = chatWindow;
             this.username = username;
             clients.add(this); // adds each client to clients arraylist
-            chatWindow.startWindow();
+            Window.startWindow();
         } catch(IOException io){
             io.printStackTrace();
         }
