@@ -1,7 +1,13 @@
 #messageDisplay{
     -fx-alignment: BOTTOM_CENTER;
+    -fx-focus-color: transparent;
 }
 
 #messageField{
     -fx-background-radius: 9px;
+}
+
+#scrollPane{
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
