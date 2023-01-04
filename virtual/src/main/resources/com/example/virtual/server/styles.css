@@ -1,0 +1,7 @@
+#messageDisplay{
+    -fx-alignment: BOTTOM_CENTER;
+}
+
+#messageField{
+    -fx-background-radius: 9px;
+}
