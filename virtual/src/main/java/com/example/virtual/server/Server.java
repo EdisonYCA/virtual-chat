@@ -1,4 +1,4 @@
-package com.example.virtual;
+package com.example.virtual.server;
 
 import javafx.scene.layout.VBox;
 
