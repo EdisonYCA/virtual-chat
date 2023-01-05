@@ -1,6 +1,5 @@
-package com.example.virtual.server;
+package com.chat.virtual.server;
 
-import com.example.virtual.server.Server;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -28,25 +26,10 @@ public class ServerController implements Initializable {
     private TextField messageField; // contains message user wants to send
     @FXML
     private VBox messageDisplay; // aligns messages sent/received vertically GUI
-
-    @FXML
-    private HBox textBoxContainer; // contains messageField
-
-    @FXML
-    private GridPane window; // contains all widgets
-    @FXML
-    private ScrollPane scrollPane; // allows you to scroll
-
     private Server server; // server
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // allows manipulation of FXML widgets
-        messageDisplay.setAlignment(Pos.BOTTOM_CENTER); // display all messages from bottom
-//        window.setStyle("-fx-background-color: #e3e3e3;");
-        messageField.setStyle("-fx-background-radius: 9px;");
-//        messageDisplay.setStyle("-fx-background-color: #e3e3e3;");
-//        scrollPane.setStyle("-fx-background-color: #e3e3e3;");
-
         try{
             server = new Server(new ServerSocket(1234)); // initialize a new server object on port 1234
         } catch(IOException io){
@@ -72,6 +55,7 @@ public class ServerController implements Initializable {
         textFlow.setTextAlignment(TextAlignment.CENTER);
 
         messageContainer.getChildren().add(textFlow);
+
         // ensure application thread is modifying GUI
         Platform.runLater(new Runnable() {
             @Override
