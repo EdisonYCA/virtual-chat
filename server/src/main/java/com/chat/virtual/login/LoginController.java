@@ -12,8 +12,11 @@ import java.util.ResourceBundle;
 import java.util.jar.JarFile;
 
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import javax.swing.*;
@@ -24,7 +27,7 @@ public class LoginController implements Initializable {
     @FXML
     private TextField usernameField;
     @FXML
-    private ImageView profilePicture;
+    private Circle profilePictureContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,7 +76,7 @@ public class LoginController implements Initializable {
         JFileChooser file_upload = new JFileChooser();
 
         // create file filter for only images
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpeg", "jpg", "gif");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpeg", "jpg", "gif", "bmp", "png");
         file_upload.setFileFilter(filter);
 
         int resVal = file_upload.showOpenDialog(null); // returns approved int if user selects a file
@@ -82,7 +85,8 @@ public class LoginController implements Initializable {
             try {
                 FileInputStream file = new FileInputStream(file_upload.getSelectedFile().getAbsolutePath());
                 Image image = new Image(file);
-                profilePicture.setImage(image); // set image view to picture
+                profilePictureContainer.setFill(new ImagePattern(image)); // set image view to picture
+                profilePictureContainer.setEffect(new DropShadow(+25d, 0d, +2d, Color.WHITE));
             } catch(FileNotFoundException fileNotFoundException){
                 System.out.println("There was an error opening this file, ensure it hasn't been deleted.");
                 fileNotFoundException.printStackTrace();
