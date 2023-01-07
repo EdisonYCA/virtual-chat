@@ -49,8 +49,7 @@
             <VBox.margin>
                 <Insets />
             </VBox.margin>
-            <Circle accessibleRole="IMAGE_VIEW" fill="DODGERBLUE" layoutX="294.0" layoutY="100.0" radius="100.0" stroke="#00000093" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="0.0" strokeType="OUTSIDE" style="-fx-fill: grey;" />
-         <ImageView fx:id="profilePicture" fitHeight="202.0" fitWidth="200.0" layoutX="194.0" pickOnBounds="true" preserveRatio="true" />
+            <Circle fx:id="profilePictureContainer" accessibleRole="IMAGE_VIEW" fill="DODGERBLUE" layoutX="294.0" layoutY="100.0" radius="100.0" stroke="#00000093" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="0.0" strokeType="OUTSIDE" style="-fx-fill: grey;" />
         </Pane>
         <Label text="DISPLAY IMAGE" textFill="#ebebeb">
             <VBox.margin>
