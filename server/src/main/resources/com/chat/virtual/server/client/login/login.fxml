@@ -29,7 +29,7 @@
             <VBox.margin>
                 <Insets bottom="15.0"/>
             </VBox.margin>
-            <TextField alignment="CENTER" layoutX="199.0" layoutY="-2.0" prefHeight="12.0" prefWidth="202.0">
+            <TextField onAction="#validateUsername" fx:id="usernameField" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;" alignment="CENTER" layoutX="199.0" layoutY="-2.0" prefHeight="12.0" prefWidth="202.0">
                 <font>
                     <Font size="15.0"/>
                 </font>
@@ -82,7 +82,7 @@
         </VBox.margin>
         <Button layoutX="241.0" layoutY="4.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="119.0"
                 style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #009179;" text="chat"
-                textAlignment="CENTER" textFill="WHITE">
+                textAlignment="CENTER" textFill="WHITE" onAction="#enterChatRoom">
             <font>
                 <Font name="Monospaced Regular" size="22.0"/>
             </font>
