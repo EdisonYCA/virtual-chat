@@ -1,6 +1,5 @@
-package com.example.virtual.login;
+package com.chat.virtual.login;
 
-import com.example.virtual.server.Window;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +10,7 @@ import java.io.IOException;
 public class LoginWindow extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Window.class.getResource("/com/example/virtual/login/login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/chat/virtual/server/client/login/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Login");
         stage.setScene(scene);

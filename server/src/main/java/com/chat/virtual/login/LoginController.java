@@ -1,4 +1,4 @@
-package com.example.virtual.login;
+package com.chat.virtual.login;
 
 public class LoginController {
 }
