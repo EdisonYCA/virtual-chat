@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="380.0" minWidth="600.0"
+          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.example.virtual.server.ServerController" stylesheets="@styles.css">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="183.0" prefHeight="338.0"
+                        valignment="BOTTOM" vgrow="ALWAYS" />
+        <RowConstraints fillHeight="false" maxHeight="45.0" minHeight="0.0" prefHeight="42.0"
+                        valignment="BOTTOM" vgrow="NEVER" />
+    </rowConstraints>
+
+    <HBox id="textFieldContainer" alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+          GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+        </padding>
+
+        <TextField fx:id="messageField" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   onAction="#sendMessage" promptText="type a message..." HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets top="5.0" bottom="5.0" left="8.0" />
+            </padding>
+        </TextField>
+    </HBox>
+
+    <ScrollPane id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="339.0" prefWidth="600.0">
+        <VBox fx:id="messageDisplay" minWidth="482.0" prefHeight="16.0" prefWidth="482.0">
+            <padding>
+                <Insets left="10.0" right="10.0" />
+            </padding>
+        </VBox>
+    </ScrollPane>
+</GridPane>
