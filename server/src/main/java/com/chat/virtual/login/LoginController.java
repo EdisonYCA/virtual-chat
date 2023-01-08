@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -18,8 +19,12 @@ import javafx.scene.shape.Circle;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
 import org.apache.commons.io.FilenameUtils;
 import animatefx.animation.Shake;
+import javafx.scene.text.Text;
 
 public class LoginController implements Initializable {
 
@@ -27,6 +32,9 @@ public class LoginController implements Initializable {
     private TextField usernameField;
     @FXML
     private Circle profilePictureContainer;
+
+    @FXML
+    private Pane defaultPfpContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +53,7 @@ public class LoginController implements Initializable {
         else{
             if(isAlphanumeric(username)){
                 usernameField.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: green");
+                createDefaultPfp(username);
                 return true;
             }
             else{
@@ -111,11 +120,23 @@ public class LoginController implements Initializable {
         return false;
     }
 
+    // add default PFP as first letter of username
+    public void createDefaultPfp(String username){
+        defaultPfpContainer.getChildren().clear();
+        Text text = new Text(username.substring(0, 1));
+        text.setFill(Color.WHITE);
+        text.setX(40);
+        text.setY(94);
+        text.setStrokeType(StrokeType.OUTSIDE);
+        text.setStrokeWidth(0);
+        text.setFont(Font.font("Monospaced Regular", 96));
+        defaultPfpContainer.getChildren().add(text);
+    }
+
     // validates username and enters chat room depending socket connection
     public void enterChatRoom(){
         if(validateUsername()){
 
         }
     }
-
 }
