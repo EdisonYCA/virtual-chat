@@ -2,25 +2,24 @@ package com.chat.virtual.login;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.jar.JarFile;
 
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FilenameUtils;
+import animatefx.animation.Shake;
 
 public class LoginController implements Initializable {
 
@@ -68,7 +67,7 @@ public class LoginController implements Initializable {
     // create animate and change border color to red for invalid username
     public void invalidUsernameAnimation(){
         usernameField.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: #B21807");
-        // add shake animation
+        new Shake(usernameField).play();
     }
 
     // allows user to upload an image as a profile picture
@@ -76,7 +75,7 @@ public class LoginController implements Initializable {
         JFileChooser file_upload = new JFileChooser();
 
         // create file filter for only images
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpeg", "jpg", "gif", "bmp", "png");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
         file_upload.setFileFilter(filter);
 
         int resVal = file_upload.showOpenDialog(null); // returns approved int if user selects a file
@@ -84,9 +83,15 @@ public class LoginController implements Initializable {
         if(resVal == JFileChooser.APPROVE_OPTION){ // user has uploaded a file
             try {
                 FileInputStream file = new FileInputStream(file_upload.getSelectedFile().getAbsolutePath());
-                Image image = new Image(file);
-                profilePictureContainer.setFill(new ImagePattern(image)); // set image view to picture
-                profilePictureContainer.setEffect(new DropShadow(+25d, 0d, +2d, Color.WHITE));
+                if(!accept(new File(file_upload.getSelectedFile().getAbsolutePath()))){ // if file extension is not a valid image extension
+                    profilePictureContainer.setEffect(new DropShadow(+25d, 0d, +2d, Color.RED));
+                    new Shake(profilePictureContainer).play();
+                }
+                else{
+                    Image image = new Image(file);
+                    profilePictureContainer.setFill(new ImagePattern(image)); // set image view to picture
+                    profilePictureContainer.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKSEAGREEN));
+                }
             } catch(FileNotFoundException fileNotFoundException){
                 System.out.println("There was an error opening this file, ensure it hasn't been deleted.");
                 fileNotFoundException.printStackTrace();
@@ -94,10 +99,22 @@ public class LoginController implements Initializable {
         }
     }
 
+    // returns true if a file ends with an image extensions
+    public boolean accept(File f){
+        String extension = FilenameUtils.getExtension(f.getName());
+
+        for(int i = 0; i < ImageIO.getReaderFileSuffixes().length; i++){
+            if(extension.equals(ImageIO.getReaderFileSuffixes()[i])){
+               return true;
+            }
+        }
+        return false;
+    }
+
     // validates username and enters chat room depending socket connection
     public void enterChatRoom(){
         if(validateUsername()){
-            System.out.println("valid username.");
+
         }
     }
 
