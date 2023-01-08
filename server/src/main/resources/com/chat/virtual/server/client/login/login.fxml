@@ -4,7 +4,6 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -50,6 +49,9 @@
                 <Insets />
             </VBox.margin>
             <Circle fx:id="profilePictureContainer" accessibleRole="IMAGE_VIEW" fill="DODGERBLUE" layoutX="294.0" layoutY="100.0" radius="100.0" stroke="#00000093" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="0.0" strokeType="OUTSIDE" style="-fx-fill: grey;" />
+         <Pane fx:id="defaultPfpContainer" layoutX="224.0" layoutY="35.0" prefHeight="137.0" prefWidth="138.0">
+
+         </Pane>
         </Pane>
         <Label text="DISPLAY IMAGE" textFill="#ebebeb">
             <VBox.margin>
