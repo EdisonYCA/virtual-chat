@@ -21,8 +21,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
-    @FXML
-    private Button sendButton; // sends message to GUI when clicked
+
     @FXML
     private TextField messageField; // contains message user wants to send
     @FXML
