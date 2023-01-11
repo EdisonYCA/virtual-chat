@@ -2,15 +2,42 @@ package com.chat.virtual.login;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import org.apache.commons.io.FilenameUtils;
+import animatefx.animation.Shake;
+import javafx.scene.text.Text;
 
 public class LoginController implements Initializable {
 
     @FXML
     private TextField usernameField;
+    @FXML
+    private Circle profilePictureContainer;
+
+    @FXML
+    private HBox defaultPfpContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -29,6 +56,7 @@ public class LoginController implements Initializable {
         else{
             if(isAlphanumeric(username)){
                 usernameField.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: green");
+                createDefaultPfp(username);
                 return true;
             }
             else{
@@ -51,14 +79,65 @@ public class LoginController implements Initializable {
     // create animate and change border color to red for invalid username
     public void invalidUsernameAnimation(){
         usernameField.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: #B21807");
-        // add shake animation
+        new Shake(usernameField).play();
     }
 
-    // validates username and enters chat room depending socket connection
-    public void enterChatRoom(){
-        if(validateUsername()){
-            System.out.println("valid username.");
+    // allows user to upload an image as a profile picture
+    public void uploadImage(){
+        JFileChooser file_upload = new JFileChooser();
+
+        // create file filter for only images
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
+        file_upload.setFileFilter(filter);
+
+        int resVal = file_upload.showOpenDialog(null); // returns approved int if user selects a file
+
+        if(resVal == JFileChooser.APPROVE_OPTION){ // user has uploaded a file
+            try {
+                FileInputStream file = new FileInputStream(file_upload.getSelectedFile().getAbsolutePath());
+
+                if(!accept(new File(file_upload.getSelectedFile().getAbsolutePath()))){ // if file extension is not a valid image extension
+                    profilePictureContainer.setEffect(new DropShadow(+25d, 0d, +2d, Color.RED));
+                    new Shake(profilePictureContainer).play();
+                }
+                else{
+                    defaultPfpContainer.getChildren().clear();
+                    Image image = new Image(file);
+                    profilePictureContainer.setFill(new ImagePattern(image)); // set image view to picture
+                    profilePictureContainer.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKSEAGREEN));
+                }
+            } catch(FileNotFoundException fileNotFoundException){
+                System.out.println("There was an error opening this file, ensure it hasn't been deleted.");
+                fileNotFoundException.printStackTrace();
+            }
         }
+    }
+
+    // returns true if a file ends with an image extensions
+    public boolean accept(File f){
+        String extension = FilenameUtils.getExtension(f.getName());
+
+        for(int i = 0; i < ImageIO.getReaderFileSuffixes().length; i++){
+            if(extension.equals(ImageIO.getReaderFileSuffixes()[i])){
+               return true;
+            }
+        }
+        return false;
+    }
+
+    // add default PFP as first letter of username
+    public void createDefaultPfp(String username){
+        defaultPfpContainer.getChildren().clear();
+        Text text = new Text(username.substring(0, 1).toUpperCase());
+        text.setFill(Color.WHITE);
+        text.setX(44.0);
+        text.setY(104);
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setStrokeType(StrokeType.OUTSIDE);
+        text.setStrokeWidth(0);
+        text.setFont(Font.font(88));
+        defaultPfpContainer.setAlignment(Pos.CENTER);
+        defaultPfpContainer.getChildren().add(text);
     }
 
 }
