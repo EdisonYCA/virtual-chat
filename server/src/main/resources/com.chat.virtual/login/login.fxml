@@ -8,89 +8,81 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-      prefWidth="600.0" style="-fx-background-color: #BFB9B4;" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.virtual.login.LoginController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #BFB9B4;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.virtual.login.LoginController">
     <VBox prefWidth="377.0">
         <VBox.margin>
-            <Insets bottom="5.0" top="20.0"/>
+            <Insets bottom="5.0" top="20.0" />
         </VBox.margin>
         <Pane>
             <VBox.margin>
-                <Insets bottom="7.0"/>
+                <Insets bottom="7.0" />
             </VBox.margin>
             <Label alignment="CENTER" layoutX="259.0" layoutY="-2.0" text="Username">
                 <font>
-                    <Font name="Monospaced Regular" size="16.0"/>
+                    <Font name="Monospaced Regular" size="16.0" />
                 </font>
             </Label>
         </Pane>
         <Pane>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
-            <TextField onAction="#validateUsername" fx:id="usernameField" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;" alignment="CENTER" layoutX="199.0" layoutY="-2.0" prefHeight="12.0" prefWidth="202.0">
+            <TextField fx:id="usernameField" alignment="CENTER" layoutX="199.0" layoutY="-2.0" onAction="#validateUsername" prefHeight="12.0" prefWidth="202.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
                 <font>
-                    <Font size="15.0"/>
+                    <Font size="15.0" />
                 </font>
                 <cursor>
-                    <Cursor fx:constant="TEXT"/>
+                    <Cursor fx:constant="TEXT" />
                 </cursor>
             </TextField>
         </Pane>
     </VBox>
-    <VBox alignment="CENTER" prefWidth="377.0"
-          style="-fx-border-color: #FFF7E9; -fx-border-radius: 1px; -fx-background-color: #4B4642; -fx-border-width:2px; -fx-background-radius: 1px; ">
+    <VBox alignment="CENTER" prefWidth="377.0" style="-fx-border-color: #FFF7E9; -fx-border-radius: 1px; -fx-background-color: #4B4642; -fx-border-width:2px; -fx-background-radius: 1px; ">
         <VBox.margin>
-            <Insets left="5.0" right="5.0"/>
+            <Insets left="5.0" right="5.0" />
         </VBox.margin>
         <padding>
-            <Insets bottom="10.0" top="10.0"/>
+            <Insets bottom="10.0" top="10.0" />
         </padding>
         <Pane prefHeight="206.0" prefWidth="377.0">
             <VBox.margin>
-                <Insets/>
+                <Insets />
             </VBox.margin>
-            <Circle accessibleRole="IMAGE_VIEW" fill="DODGERBLUE" layoutX="294.0" layoutY="100.0" radius="100.0"
-                    stroke="#00000093" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="0.0"
-                    strokeType="OUTSIDE" style="-fx-fill: grey;"/>
+            <Circle fx:id="profilePictureContainer" accessibleRole="IMAGE_VIEW" fill="DODGERBLUE" layoutX="293.0" layoutY="103.0" radius="100.0" stroke="#00000093" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="0.0" strokeType="OUTSIDE" style="-fx-fill: grey;" />
+         <StackPane fx:id="defaultPfpContainer" layoutX="193.0" prefHeight="200.0" prefWidth="200.0" />
         </Pane>
         <Label text="DISPLAY IMAGE" textFill="#ebebeb">
             <VBox.margin>
-                <Insets left="6.0" top="5.0"/>
+                <Insets left="6.0" top="5.0" />
             </VBox.margin>
     </Label>
         <Pane prefWidth="200.0">
             <VBox.margin>
-                <Insets bottom="20.0" top="20.0"/>
+                <Insets bottom="20.0" top="20.0" />
             </VBox.margin>
-            <Button layoutX="224.0" layoutY="-3.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="138.0"
-                    style="-fx-background-radius: 20; -fx-background-color: #322D29;" text="upload image"
-                    textAlignment="CENTER" textFill="WHITE">
+            <Button layoutX="224.0" layoutY="-3.0" mnemonicParsing="false" onAction="#uploadImage" prefHeight="29.0" prefWidth="138.0" style="-fx-background-radius: 20; -fx-background-color: #322D29;" text="upload image" textAlignment="CENTER" textFill="WHITE">
                 <font>
-                    <Font name="Monospaced Bold Italic" size="15.0"/>
+                    <Font name="Monospaced Bold Italic" size="15.0" />
                 </font>
                 <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                 </cursor>
             </Button>
         </Pane>
     </VBox>
     <Pane prefWidth="200.0">
         <VBox.margin>
-            <Insets top="20.0"/>
+            <Insets top="20.0" />
         </VBox.margin>
-        <Button layoutX="241.0" layoutY="4.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="119.0"
-                style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #009179;" text="chat"
-                textAlignment="CENTER" textFill="WHITE" onAction="#enterChatRoom">
+        <Button layoutX="241.0" layoutY="4.0" mnemonicParsing="false" onAction="#enterChatRoom" prefHeight="34.0" prefWidth="119.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #009179;" text="chat" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font name="Monospaced Regular" size="22.0"/>
+                <Font name="Monospaced Regular" size="22.0" />
             </font>
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
             <effect>
-                <DropShadow height="15.14" radius="8.535"/>
+                <DropShadow height="15.14" radius="8.535" />
             </effect>
         </Button>
     </Pane>
