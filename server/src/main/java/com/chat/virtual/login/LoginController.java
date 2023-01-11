@@ -6,12 +6,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -34,7 +36,7 @@ public class LoginController implements Initializable {
     private Circle profilePictureContainer;
 
     @FXML
-    private Pane defaultPfpContainer;
+    private StackPane defaultPfpContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -123,10 +125,8 @@ public class LoginController implements Initializable {
     // add default PFP as first letter of username
     public void createDefaultPfp(String username){
         defaultPfpContainer.getChildren().clear();
-        Text text = new Text(username.substring(0, 1));
+        Text text = new Text(username.substring(0, 1).toUpperCase());
         text.setFill(Color.WHITE);
-        text.setX(40);
-        text.setY(94);
         text.setStrokeType(StrokeType.OUTSIDE);
         text.setStrokeWidth(0);
         text.setFont(Font.font("Monospaced Regular", 96));
