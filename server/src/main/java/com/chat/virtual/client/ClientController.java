@@ -57,7 +57,7 @@ public class ClientController implements Initializable {
             sentMessage.setFill(Color.WHITE);
 
             TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
-            textFlow.setStyle("-fx-background-color: #2F8588; " +
+            textFlow.setStyle("-fx-background-color: #7D52D9; " +
                     "-fx-background-radius: 20px;");
             textFlow.setPadding(new Insets(5, 10, 5, 10));
             textFlow.setTextAlignment(TextAlignment.CENTER);
@@ -79,7 +79,7 @@ public class ClientController implements Initializable {
         sentMessage.setFill(Color.BLACK);
 
         TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
-        textFlow.setStyle("-fx-background-color: #D9D9D9; " +
+        textFlow.setStyle("-fx-background-color: #e1e1e1; " +
                 "-fx-background-radius: 20px;");
         textFlow.setPadding(new Insets(5, 10, 5, 10));
         textFlow.setTextAlignment(TextAlignment.CENTER);
