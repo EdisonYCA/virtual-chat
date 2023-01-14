@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -48,11 +49,15 @@ public class ServerController implements Initializable {
         Text sentMessage = new Text(message);
         sentMessage.setFill(Color.BLACK);
 
-        TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
-        textFlow.setStyle("-fx-background-color: #D9D9D9; " +
+        // load font
+        Font font = new Font("/com.chat.virtual/fonts/SourceSansPro-Regular.ttf", 12);
+
+        TextFlow textFlow = new TextFlow(sentMessage);
+        textFlow.setStyle("-fx-background-color: #e1e1e1; " +
                 "-fx-background-radius: 20px;");
         textFlow.setPadding(new Insets(5, 10, 5, 10));
         textFlow.setTextAlignment(TextAlignment.CENTER);
+
 
         messageContainer.getChildren().add(textFlow);
 
@@ -81,7 +86,7 @@ public class ServerController implements Initializable {
                 sentMessage.setFill(Color.WHITE);
 
                 TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
-                textFlow.setStyle("-fx-background-color: #2F8588; " +
+                textFlow.setStyle("-fx-background-color: #7D52D9; " +
                         "-fx-background-radius: 20px;");
                 textFlow.setPadding(new Insets(5, 10, 5, 10));
                 textFlow.setTextAlignment(TextAlignment.CENTER);
