@@ -42,7 +42,7 @@
               </VBox>
       </content>
        </ScrollPane>
-      <MenuBar>
+      <MenuBar prefWidth="600.0" style="-fx-background-color: #1A1A1AFF;">
         <menus>
           <Menu mnemonicParsing="false" text="Username">
             <items>
@@ -55,6 +55,9 @@
             </items>
           </Menu>
         </menus>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </MenuBar>
    </children>
 </GridPane>
