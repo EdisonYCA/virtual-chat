@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+.root {
+    -fx-background-color: #0e0e0e;
+    -fx-font-family: 'Roboto Condensed', sans-serif;
+}
+.messageBox {
+    -fx-background-color: #1A1A1AFF;
+    -fx-text-fill: white;
+}
+.scrollPane {
+    -fx-background-color: #0e0e0e
+}
+.userMenu {
+    -fx-background-color:  #1A1A1AFF;
+}
+
+.userMenu .label {
+    -fx-text-fill: #c5c5c5;
+}
