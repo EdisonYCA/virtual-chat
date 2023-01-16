@@ -82,11 +82,14 @@ public class ServerController implements Initializable {
                 HBox messageContainer = new HBox(); // create HBox to store new message in
                 messageContainer.setAlignment(Pos.CENTER_RIGHT);
                 messageContainer.setPadding(new Insets(5, 5, 5, 5)); // padding
-                HBox textContainer = new HBox();//contains text and img
-                VBox profileMsg = new VBox();
+
+                HBox textContainer = new HBox();//controls the message and profile picture's horizontal layout
+                VBox profileMsg = new VBox();//controls the message and profile picture and username vertical layout
 
                 Text sentMessage = new Text(messageToSend);
                 sentMessage.setFill(Color.WHITE);
+
+                //dummy data
                 Circle pfp = new Circle(15,Color.RED);
                 Text username = new Text("Money Man");
                 username.setFill(Color.GREEN);
@@ -97,8 +100,16 @@ public class ServerController implements Initializable {
                         "-fx-background-radius: 20px;");
                 textFlow.setPadding(new Insets(5, 10, 5, 10));
                 textFlow.setTextAlignment(TextAlignment.CENTER);
+
+                /*note: the order in which nodes are added matters*/
+
+                //this will contain a Hbox that will manage the message and profile img horizontal position.
                 textContainer.getChildren().addAll(textFlow, pfp);
+
+                //this will contain a Vbox that will manage (textContainer) and the username's vertical position.
                 profileMsg.getChildren().addAll(username,textContainer);
+
+                profileMsg.setAlignment(Pos.BOTTOM_RIGHT);
 
                 messageContainer.getChildren().add(profileMsg);
                 messageDisplay.getChildren().add(messageContainer);
