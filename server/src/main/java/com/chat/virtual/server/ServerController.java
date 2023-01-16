@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -81,17 +82,25 @@ public class ServerController implements Initializable {
                 HBox messageContainer = new HBox(); // create HBox to store new message in
                 messageContainer.setAlignment(Pos.CENTER_RIGHT);
                 messageContainer.setPadding(new Insets(5, 5, 5, 5)); // padding
+                HBox textContainer = new HBox();//contains text and img
+                VBox profileMsg = new VBox();
 
                 Text sentMessage = new Text(messageToSend);
                 sentMessage.setFill(Color.WHITE);
+                Circle pfp = new Circle(15,Color.RED);
+                Text username = new Text("Money Man");
+                username.setFill(Color.GREEN);
+
 
                 TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
                 textFlow.setStyle("-fx-background-color: #7D52D9; " +
                         "-fx-background-radius: 20px;");
                 textFlow.setPadding(new Insets(5, 10, 5, 10));
                 textFlow.setTextAlignment(TextAlignment.CENTER);
+                textContainer.getChildren().addAll(textFlow, pfp);
+                profileMsg.getChildren().addAll(username,textContainer);
 
-                messageContainer.getChildren().add(textFlow);
+                messageContainer.getChildren().add(profileMsg);
                 messageDisplay.getChildren().add(messageContainer);
             }
             // sending message
