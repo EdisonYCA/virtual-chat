@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -101,10 +100,11 @@ public class ServerController implements Initializable {
                 sentMessage.setFill(Color.WHITE);
 
                 //dummy data
-                Circle pfp = new Circle(15,Color.RED);
+                Circle pfp = new Circle(15,Color.DARKSEAGREEN);
+                pfp.setFill(new ImagePattern(pfpImg));
                 Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
                 Text username = new Text("Money Man");
-                username.setFill(Color.GREEN);
+                username.setFill(Color.WHITE);
                 HBox userInfo = new HBox(username, userStatus);
                 userInfo.setAlignment(Pos.TOP_RIGHT);
                 HBox.setMargin(userStatus, new Insets(0,0,0,3));
