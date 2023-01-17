@@ -48,7 +48,7 @@
        </ScrollPane>
       <MenuBar nodeOrientation="RIGHT_TO_LEFT" prefWidth="600.0" styleClass="userMenu">
         <menus>
-          <Menu styleClass="settingsIcon" mnemonicParsing="false">
+          <Menu mnemonicParsing="false">
               <graphic>
                   <FontIcon  iconLiteral="eva-menu" iconSize="25" opacity="0.72">
                      <iconColor>
@@ -70,7 +70,7 @@
               </graphic>
             <items>
               <MenuItem mnemonicParsing="false" text="Change Username" />
-              <MenuItem mnemonicParsing="false" text="Add image" />
+              <MenuItem onAction="#uploadImage" mnemonicParsing="false" text="Change Profile Image" />
             </items>
           </Menu>
         </menus>
@@ -81,6 +81,5 @@
             <Insets bottom="3.0" top="3.0" />
          </padding>
       </MenuBar>
-      <Button onAction="#uploadImage" mnemonicParsing="false" text="Button" />
    </children>
 </GridPane>
