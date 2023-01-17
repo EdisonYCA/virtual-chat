@@ -4,8 +4,10 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="380.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.virtual.server.ServerController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="380.0" minWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.virtual.server.ServerController">
     <stylesheets>
         <URL value="@basicStyles.css" />
     </stylesheets>
@@ -44,12 +46,30 @@
               </VBox>
       </content>
        </ScrollPane>
-      <MenuBar prefWidth="600.0" styleClass="userMenu">
+      <MenuBar nodeOrientation="RIGHT_TO_LEFT" prefWidth="600.0" styleClass="userMenu">
         <menus>
-          <Menu mnemonicParsing="false" styleClass="menuContainer" text="Settings">
+          <Menu styleClass="settingsIcon" mnemonicParsing="false">
+              <graphic>
+                  <FontIcon  iconLiteral="eva-menu" iconSize="25" opacity="0.72">
+                     <iconColor>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </iconColor></FontIcon>
+              </graphic>
             <items>
               <MenuItem mnemonicParsing="false" text="Change Username" />
-                <Menu mnemonicParsing="false" text="Profile Image" />
               <MenuItem mnemonicParsing="false" text="Add image" />
             </items>
           </Menu>
