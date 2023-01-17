@@ -8,14 +8,24 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import org.apache.commons.io.FilenameUtils;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
@@ -29,6 +39,7 @@ public class ServerController implements Initializable {
     @FXML
     private VBox messageDisplay; // aligns messages sent/received vertically GUI
     private Server server; // server
+    private Image pfpImg;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // allows manipulation of FXML widgets
@@ -122,5 +133,47 @@ public class ServerController implements Initializable {
             }
             // sending message
             server.sendMessageToClient(messageToSend);
+    }
+
+    public void uploadImage() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JFileChooser file_upload = new JFileChooser();
+
+                // create file filter for only images
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
+                file_upload.setFileFilter(filter);
+
+                int resVal = file_upload.showOpenDialog(null); // returns approved int if user selects a file
+
+                if(resVal == JFileChooser.APPROVE_OPTION){ // user has uploaded a file
+                    try {
+                        FileInputStream file = new FileInputStream(file_upload.getSelectedFile().getAbsolutePath());
+                        if(!accept(new File(file_upload.getSelectedFile().getAbsolutePath()))){ // if file extension is not a valid image extension
+                            System.out.println("invalid");
+                        }
+                        else{
+                            pfpImg = new Image(file);
+                        }
+                    } catch(FileNotFoundException fileNotFoundException){
+                        System.out.println("There was an error opening this file, ensure it hasn't been deleted.");
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    // returns true if a file ends with an image extensions
+    public boolean accept(File f){
+        String extension = FilenameUtils.getExtension(f.getName());
+
+        for(int i = 0; i < ImageIO.getReaderFileSuffixes().length; i++){
+            if(extension.equals(ImageIO.getReaderFileSuffixes()[i])){
+                return true;
+            }
+        }
+        return false;
     }
 }
