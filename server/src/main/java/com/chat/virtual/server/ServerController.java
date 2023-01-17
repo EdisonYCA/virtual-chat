@@ -91,8 +91,12 @@ public class ServerController implements Initializable {
 
                 //dummy data
                 Circle pfp = new Circle(15,Color.RED);
+                Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
                 Text username = new Text("Money Man");
                 username.setFill(Color.GREEN);
+                HBox userInfo = new HBox(username, userStatus);
+                userInfo.setAlignment(Pos.TOP_RIGHT);
+                HBox.setMargin(userStatus, new Insets(0,0,0,3));
 
 
                 TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
@@ -105,9 +109,11 @@ public class ServerController implements Initializable {
 
                 //this will contain a Hbox that will manage the message and profile img horizontal position.
                 textContainer.getChildren().addAll(textFlow, pfp);
+                HBox.setMargin(pfp, new Insets(0, 0 ,0 ,5));
+                VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
 
                 //this will contain a Vbox that will manage (textContainer) and the username's vertical position.
-                profileMsg.getChildren().addAll(username,textContainer);
+                profileMsg.getChildren().addAll(userInfo,textContainer);
 
                 profileMsg.setAlignment(Pos.BOTTOM_RIGHT);
 
