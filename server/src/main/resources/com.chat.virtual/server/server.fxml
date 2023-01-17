@@ -81,5 +81,6 @@
             <Insets bottom="3.0" top="3.0" />
          </padding>
       </MenuBar>
+      <Button onAction="#uploadImage" mnemonicParsing="false" text="Button" />
    </children>
 </GridPane>
