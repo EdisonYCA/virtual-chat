@@ -8,12 +8,13 @@
     -fx-text-fill: white;
 }
 .scrollPane {
-    -fx-background-color: #0e0e0e
+    -fx-background-color: #0e0e0e;
+
 }
 .userMenu {
     -fx-background-color:  #1A1A1AFF;
 }
 
 .userMenu .label {
-    -fx-text-fill: #c5c5c5;
+    -fx-text-fill: #000000;
 }
