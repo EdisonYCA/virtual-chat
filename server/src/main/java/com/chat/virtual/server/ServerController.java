@@ -191,7 +191,7 @@ public class ServerController implements Initializable {
      * @return A StackPane instance containing two Objects (Circle & Text)
      * */
     private StackPane defProfileImg(){
-        Text text = new Text("U");
+        Text text = new Text("M");
         text.setFill(Color.WHITE);
         StackPane stackPane = new StackPane(new Circle(15, color),text);
         HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
