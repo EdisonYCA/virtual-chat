@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ServerController implements Initializable {
@@ -39,6 +40,8 @@ public class ServerController implements Initializable {
     private VBox messageDisplay; // aligns messages sent/received vertically GUI
     private Server server; // server
     private Image pfpImg;
+
+    final private Color color = randomColor();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // allows manipulation of FXML widgets
@@ -80,12 +83,22 @@ public class ServerController implements Initializable {
             }
         });
     }
+    private Color randomColor() {
+        Random rand = new Random();
+
+        int r = rand.nextInt(0, 255);
+        int g = rand.nextInt(0, 255);
+        int b = rand.nextInt(0, 255);
+
+        return Color.rgb(r,g,b);
+    }
 
         // send message from server -> client and display message on server GUI
         @FXML
         public void sendMessage(ActionEvent event){
             // displaying message
             String messageToSend = messageField.getText();
+
 
             if(!messageToSend.isEmpty()) { // ensure message to be sent isn't empty
                 messageField.clear();
@@ -100,8 +113,7 @@ public class ServerController implements Initializable {
                 sentMessage.setFill(Color.WHITE);
 
                 //dummy data
-                Circle pfp = new Circle(15,Color.DARKSEAGREEN);
-                pfp.setFill(new ImagePattern(pfpImg));
+                Circle pfp = new Circle(15,color);
                 Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
                 Text username = new Text("Money Man");
                 username.setFill(Color.WHITE);
