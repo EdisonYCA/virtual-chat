@@ -1,7 +1,6 @@
 package com.chat.virtual.server;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -12,9 +11,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -29,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ServerController implements Initializable {
@@ -42,6 +40,8 @@ public class ServerController implements Initializable {
     private Image pfpImg; // profile picture
 
     private final String username = generateUsername(); // user's username
+
+    final private Color color = randomColor();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // allows manipulation of FXML widgets
@@ -72,6 +72,16 @@ public class ServerController implements Initializable {
         });
     }
 
+    private Color randomColor() {
+        Random rand = new Random();
+
+        int r = rand.nextInt(0, 255);
+        int g = rand.nextInt(0, 255);
+        int b = rand.nextInt(0, 255);
+
+        return Color.rgb(r,g,b);
+    }
+
         // send message from server -> client and display message on server GUI
         @FXML
         public void sendMessage(){
@@ -84,10 +94,14 @@ public class ServerController implements Initializable {
                 message.setFill(Color.WHITE);
 
                 /* Set and style users profile picture, username, and online status */
-                Circle pfp = new Circle(15, Color.ALICEBLUE); // profile picture
+
                 Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN); // green when online, red when offline
                 // setting username
                 Text username = new Text(this.username);
+                Text sentMessage = new Text(messageToSend);
+                sentMessage.setFill(Color.WHITE);
+
+                //dummy data
                 username.setFill(Color.WHITE);
                 // userInfo stores user and user status and aligns them properly
                 HBox userInfo = new HBox(username, userStatus);
@@ -96,13 +110,13 @@ public class ServerController implements Initializable {
 
                 /* displaying messages with proper alignment */
                 HBox textContainer = new HBox(); //controls the message and profile picture's horizontal alignment
-                textContainer.getChildren().addAll(styleMessage(message, true), pfp);
-                HBox.setMargin(pfp, new Insets(0, 0 ,0 ,5));
+                textContainer.getChildren().addAll(styleMessage(message, true), defProfileImg());
                 VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
 
                 /* display messages*/
                 VBox profileMsg = new VBox(); //controls textContainer and the username's vertical alignment
                 profileMsg.getChildren().addAll(userInfo,textContainer);
+
                 profileMsg.setAlignment(Pos.BOTTOM_RIGHT);
 
                 HBox messageContainer = styleMessageContainer(true);
@@ -171,6 +185,18 @@ public class ServerController implements Initializable {
                 }
             }
         }).start();
+    }
+
+    /**
+     * this method is responsible for creating a default profile image for the user
+     * @return A StackPane instance containing two Objects (Circle & Text)
+     * */
+    private StackPane defProfileImg(){
+        Text text = new Text("M");
+        text.setFill(Color.WHITE);
+        StackPane stackPane = new StackPane(new Circle(15, color),text);
+        HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
+        return stackPane;
     }
 
     // returns true if a file ends with an image extensions
