@@ -41,8 +41,6 @@ public class ServerController implements Initializable {
 
     private final String username = generateUsername(); // user's username
 
-    final private Color color = randomColor();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { // allows manipulation of FXML widgets
         try{
@@ -192,9 +190,9 @@ public class ServerController implements Initializable {
      * @return A StackPane instance containing two Objects (Circle & Text)
      * */
     private StackPane defProfileImg(){
-        Text text = new Text("M");
-        text.setFill(Color.WHITE);
-        StackPane stackPane = new StackPane(new Circle(15, color),text);
+        Text text = new Text("U");
+        text.setFill(Color.BLACK);
+        StackPane stackPane = new StackPane(new Circle(15, Color.BEIGE),text);
         HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
         return stackPane;
     }
