@@ -96,11 +96,11 @@ public class ServerController implements Initializable {
                 Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN); // green when online, red when offline
                 // setting username
                 Text username = new Text(this.username);
+                username.setFill(Color.WHITE);
                 Text sentMessage = new Text(messageToSend);
                 sentMessage.setFill(Color.WHITE);
 
-                //dummy data
-                username.setFill(Color.WHITE);
+
                 // userInfo stores user and user status and aligns them properly
                 HBox userInfo = new HBox(username, userStatus);
                 userInfo.setAlignment(Pos.TOP_RIGHT);
@@ -210,7 +210,7 @@ public class ServerController implements Initializable {
     }
 
     // returns a random username
-    public String generateUsername(){
+    public static String generateUsername(){
         String username = "user";
 
         int max = 20000;
