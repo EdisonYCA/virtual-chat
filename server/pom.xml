@@ -53,11 +53,6 @@
             <version>2.11.0</version>
         </dependency>
         <dependency>
-            <groupId>io.github.typhon0</groupId>
-            <artifactId>AnimateFX</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-evaicons-pack</artifactId>
             <version>12.3.1</version>
