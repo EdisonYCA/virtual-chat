@@ -61,20 +61,21 @@ public class ServerController implements Initializable {
         Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
         Text clientUsername = new Text(ClientController.username);
         clientUsername.setFill(Color.WHITE);
-        HBox usernameAndActivityHBox = new HBox(clientUsername, userStatus);
+        HBox usernameAndActivityHBox = new HBox(3, clientUsername, userStatus);
         usernameAndActivityHBox.setAlignment(Pos.TOP_RIGHT);
-        HBox.setMargin(userStatus, new Insets(0,0,0,3));
+        HBox.setMargin(userStatus, new Insets(0,10,0, 0));
+        HBox.setMargin(clientUsername, new Insets(0,10,0,0));
 
         /* Create a HBox container to store clients message and profile picture */
         HBox messageAndPfpHBox = new HBox();
+        messageAndPfpHBox.setSpacing(10);
         messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
-        HBox.setMargin(userStatus, new Insets(0,0,3,0));
         messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
 
         /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
         VBox alignUsernameAndMessageVBox = new VBox();
         alignUsernameAndMessageVBox.getChildren().addAll(usernameAndActivityHBox, messageAndPfpHBox);
-        alignUsernameAndMessageVBox.setAlignment(Pos.BOTTOM_RIGHT);
+        alignUsernameAndMessageVBox.setAlignment(Pos.BOTTOM_LEFT);
 
         /* Create HBox to horizontally align messageAndPfpHBox & usernameAndActivityHBox stored in alignUsernameAndMessageVBox */
         HBox alignUsernameAndMessageHBox = styleMessageContainer(false);
