@@ -12,6 +12,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -36,7 +37,7 @@ public class ServerController implements Initializable {
     @FXML
     private VBox messageDisplay; // aligns messages sent/received vertically GUI
     private Server server; // server
-    private Image pfpImg; // profile picture
+    private static Image pfpImg = new Image(defProfileImg());
 
     private final String username = generateUsername(); // user's username
 
@@ -70,7 +71,7 @@ public class ServerController implements Initializable {
         HBox messageAndPfpHBox = new HBox();
         messageAndPfpHBox.setSpacing(10);
         messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
-        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
+//        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
 
         /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
         VBox alignUsernameAndMessageVBox = new VBox();
@@ -126,8 +127,11 @@ public class ServerController implements Initializable {
                 HBox.setMargin(userStatus, new Insets(0,0,0,3));
 
                 /* displaying messages with proper alignment */
+                Circle pfpImgContainer = new Circle(15);
+                pfpImgContainer.setFill(new ImagePattern(pfpImg));
                 HBox textContainer = new HBox(); //controls the message and profile picture's horizontal alignment
-                textContainer.getChildren().addAll(styleMessage(message, true), defProfileImg());
+                textContainer.setSpacing(10);
+                textContainer.getChildren().addAll(styleMessage(message, true), pfpImgContainer);
                 VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
 
                 /* display messages*/
@@ -207,12 +211,16 @@ public class ServerController implements Initializable {
      * this method is responsible for creating a default profile image for the user
      * @return A StackPane instance containing two Objects (Circle & Text)
      * */
-    private static StackPane defProfileImg(){
-        Text text = new Text("U");
-        text.setFill(Color.BLACK);
-        StackPane stackPane = new StackPane(new Circle(15, Color.BEIGE),text);
-        HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
-        return stackPane;
+    private static FileInputStream defProfileImg() {
+        FileInputStream profileImg = null;
+
+        try {
+            profileImg = new FileInputStream("C:\\Users\\Ediso\\IdeaProjects\\virtual-chat\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return profileImg;
     }
 
     // returns true if a file ends with an image extensions
