@@ -30,7 +30,7 @@ public class ClientController implements Initializable {
     @FXML
     private VBox messageDisplay; // aligns messages sent/received vertically GUI
     private Client client;
-    private final String username = ServerController.generateUsername(); // user's username
+    public static String username = ServerController.generateUsername(); // user's username
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         messageDisplay.setAlignment(Pos.BOTTOM_CENTER); // display all messages from bottom
@@ -56,7 +56,7 @@ public class ClientController implements Initializable {
             message.setFill(Color.WHITE);
 
             Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN); // green when online, red when offline
-            Text username = new Text(this.username); // needs func
+            Text username = new Text(ClientController.username); // needs func
             username.setFill(Color.WHITE);
             Text sentMessage = new Text(messageToSend);
             sentMessage.setFill(Color.WHITE);
@@ -75,6 +75,7 @@ public class ClientController implements Initializable {
             VBox profileMsg = new VBox(); //controls textContainer and the username's vertical alignment
             profileMsg.getChildren().addAll(userInfo, textContainer);
             profileMsg.setAlignment(Pos.BOTTOM_RIGHT);
+
             HBox messageContainer = styleMessageContainer(true);
             messageContainer.getChildren().add(profileMsg);
             messageDisplay.getChildren().add(messageContainer);
@@ -85,25 +86,36 @@ public class ClientController implements Initializable {
 
     // display message from server -> client
     public static void displayMessageFromServer(String message, VBox messageDisplay){
-        HBox messageContainer = new HBox(); // create HBox to store new message in
-        messageContainer.setAlignment(Pos.CENTER_LEFT);
-        messageContainer.setPadding(new Insets(5,5,5,5));
+        /* Store message from user in Text object */
+        Text msg = new Text(message);
+        msg.setFill(Color.BLACK);
 
-        Text sentMessage = new Text(message);
-        sentMessage.setFill(Color.BLACK);
+        /* Create a HBox container to store client username & their online activity */
+        Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
+        Text clientUsername = new Text(ClientController.username);
+        clientUsername.setFill(Color.WHITE);
+        HBox usernameAndActivityHBox = new HBox(clientUsername, userStatus);
+        usernameAndActivityHBox.setAlignment(Pos.TOP_RIGHT);
+        HBox.setMargin(userStatus, new Insets(0,0,0,3));
 
-        TextFlow textFlow = new TextFlow(sentMessage); // wrap message in text flow to add styling
-        textFlow.setStyle("-fx-background-color: #e1e1e1; " +
-                "-fx-background-radius: 20px;");
-        textFlow.setPadding(new Insets(5, 10, 5, 10));
-        textFlow.setTextAlignment(TextAlignment.CENTER);
+        /* Create a HBox container to store clients message and profile picture */
+        HBox messageAndPfpHBox = new HBox();
+        messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
+        HBox.setMargin(userStatus, new Insets(0,0,3,0));
+        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
 
-        messageContainer.getChildren().add(textFlow);
-        // ensure application thread is modifying GUI
+        /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
+        VBox alignUsernameAndMessageVBox = new VBox();
+        alignUsernameAndMessageVBox.getChildren().addAll(usernameAndActivityHBox, messageAndPfpHBox);
+        alignUsernameAndMessageVBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+        /* Create HBox to horizontally align messageAndPfpHBox & usernameAndActivityHBox stored in alignUsernameAndMessageVBox */
+        HBox alignUsernameAndMessageHBox = styleMessageContainer(false);
+        alignUsernameAndMessageHBox.getChildren().add(alignUsernameAndMessageVBox);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageDisplay.getChildren().add(messageContainer); // add VBox storing message to messageDisplay
+                messageDisplay.getChildren().add(alignUsernameAndMessageHBox); // add VBox storing message to messageDisplay
             }
         });
     }
@@ -142,7 +154,7 @@ public class ClientController implements Initializable {
      * this method is responsible for creating a default profile image for the user
      * @return A StackPane instance containing two Objects (Circle & Text)
      * */
-    private StackPane defProfileImg(){
+    private static StackPane defProfileImg(){
         Text text = new Text("U");
         text.setFill(Color.BLACK);
         StackPane stackPane = new StackPane(new Circle(15, Color.BEIGE),text);

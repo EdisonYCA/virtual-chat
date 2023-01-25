@@ -1,5 +1,6 @@
 package com.chat.virtual.server;
 
+import com.chat.virtual.client.ClientController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,8 +32,6 @@ import java.util.ResourceBundle;
 
 public class ServerController implements Initializable {
     @FXML
-    private Button sendButton; // sends message to GUI when clicked
-    @FXML
     private TextField messageField; // contains message user wants to send
     @FXML
     private VBox messageDisplay; // aligns messages sent/received vertically GUI
@@ -54,18 +53,38 @@ public class ServerController implements Initializable {
 
     // display message from client -> server
     public static void displayMessageFromClient(String message, VBox messageDisplay){
-        HBox messageContainer = styleMessageContainer(false);
-
+        /* Store message from user in Text object */
         Text msg = new Text(message);
         msg.setFill(Color.BLACK);
 
-        messageContainer.getChildren().add(styleMessage(msg, false));
+        /* Create a HBox container to store client username & their online activity */
+        Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
+        Text clientUsername = new Text(ClientController.username);
+        clientUsername.setFill(Color.WHITE);
+        HBox usernameAndActivityHBox = new HBox(clientUsername, userStatus);
+        usernameAndActivityHBox.setAlignment(Pos.TOP_RIGHT);
+        HBox.setMargin(userStatus, new Insets(0,0,0,3));
 
-        // ensure application thread is modifying GUI
+        /* Create a HBox container to store clients message and profile picture */
+        HBox messageAndPfpHBox = new HBox();
+        messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
+        HBox.setMargin(userStatus, new Insets(0,0,3,0));
+        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
+
+        /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
+        VBox alignUsernameAndMessageVBox = new VBox();
+        alignUsernameAndMessageVBox.getChildren().addAll(usernameAndActivityHBox, messageAndPfpHBox);
+        alignUsernameAndMessageVBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+        /* Create HBox to horizontally align messageAndPfpHBox & usernameAndActivityHBox stored in alignUsernameAndMessageVBox */
+        HBox alignUsernameAndMessageHBox = styleMessageContainer(false);
+        alignUsernameAndMessageHBox.getChildren().add(alignUsernameAndMessageVBox);
+
+        /* add to main GUI VBox */
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                messageDisplay.getChildren().add(messageContainer); // add VBox storing message to messageDisplay
+                messageDisplay.getChildren().add(alignUsernameAndMessageHBox);
             }
         });
     }
@@ -100,8 +119,7 @@ public class ServerController implements Initializable {
                 Text sentMessage = new Text(messageToSend);
                 sentMessage.setFill(Color.WHITE);
 
-
-                // userInfo stores user and user status and aligns them properly
+                // userInfo stores username and user status and aligns them properly
                 HBox userInfo = new HBox(username, userStatus);
                 userInfo.setAlignment(Pos.TOP_RIGHT);
                 HBox.setMargin(userStatus, new Insets(0,0,0,3));
@@ -114,7 +132,6 @@ public class ServerController implements Initializable {
                 /* display messages*/
                 VBox profileMsg = new VBox(); //controls textContainer and the username's vertical alignment
                 profileMsg.getChildren().addAll(userInfo,textContainer);
-
                 profileMsg.setAlignment(Pos.BOTTOM_RIGHT);
 
                 HBox messageContainer = styleMessageContainer(true);
@@ -189,7 +206,7 @@ public class ServerController implements Initializable {
      * this method is responsible for creating a default profile image for the user
      * @return A StackPane instance containing two Objects (Circle & Text)
      * */
-    private StackPane defProfileImg(){
+    private static StackPane defProfileImg(){
         Text text = new Text("U");
         text.setFill(Color.BLACK);
         StackPane stackPane = new StackPane(new Circle(15, Color.BEIGE),text);
