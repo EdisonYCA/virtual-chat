@@ -130,7 +130,7 @@ public class ServerController implements Initializable {
                 Circle pfpImgContainer = new Circle(15);
                 pfpImgContainer.setFill(new ImagePattern(pfpImg));
                 HBox textContainer = new HBox(); //controls the message and profile picture's horizontal alignment
-                textContainer.setSpacing(10);
+                textContainer.setSpacing(5);
                 textContainer.getChildren().addAll(styleMessage(message, true), pfpImgContainer);
                 VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
 
