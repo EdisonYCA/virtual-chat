@@ -16,6 +16,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.apache.commons.io.FilenameUtils;
+
+import java.awt.event.ActionEvent;
 import java.lang.Math;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -183,6 +186,23 @@ public class ServerController implements Initializable {
                 }
             }
         }).start();
+    }
+
+    @FXML
+    private void setUsername(){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.show();
+        textInputDialog.setTitle("Change username");
+        textInputDialog.setHeaderText("Enter a valid username");
+        textInputDialog.setContentText("Enter username: ");
+        System.out.println(textInputDialog.getEditor());
+
+        Optional<String> result = textInputDialog.showAndWait();
+        if (result.isPresent()){
+            System.out.println(result.get());
+        }
+
+
     }
 
     /**
