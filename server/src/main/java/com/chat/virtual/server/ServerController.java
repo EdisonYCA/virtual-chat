@@ -2,6 +2,8 @@ package com.chat.virtual.server;
 
 import com.chat.virtual.client.ClientController;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -16,12 +18,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.Math;
+import javafx.scene.control.ScrollPane;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -34,6 +35,8 @@ public class ServerController implements Initializable {
     private TextField messageField; // contains the message the user types in GUI
     @FXML
     private VBox messageDisplay; // Aligns all nodes vertically
+    @FXML
+    private ScrollPane scrollPane;  // responsible for allowing users to scroll through messages
     private Server server; // server object to init a connection
     private static Image pfpImg = new Image(defProfileImg()); // users profile picture, initially contains the default picture
     private String username = "User1"; // users username, initially contains "user1"
@@ -45,6 +48,14 @@ public class ServerController implements Initializable {
         } catch(IOException io){
             io.printStackTrace();
         }
+
+        /* Add a height listener to the main vbox and set that new height to the scroll pane*/
+        messageDisplay.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newHeight) {
+                scrollPane.setVvalue((Double) newHeight);
+            }
+        });
 
         server.receiveMessageFromClient(messageDisplay); // thread listening for any messages that are sent
     }
@@ -220,7 +231,7 @@ public class ServerController implements Initializable {
         FileInputStream profileImg = null;
 
         try {
-            profileImg = new FileInputStream("C:\\Users\\joand\\IdeaProjects\\virtual-chat2\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+            profileImg = new FileInputStream("C:\\Users\\Ediso\\IdeaProjects\\virtual-chat\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

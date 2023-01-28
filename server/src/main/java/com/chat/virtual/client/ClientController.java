@@ -2,11 +2,14 @@ package com.chat.virtual.client;
 
 import com.chat.virtual.server.ServerController;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -36,6 +39,8 @@ public class ClientController implements Initializable {
     private TextField messageField; // contains the message the user types in GUI
     @FXML
     private VBox messageDisplay; // Aligns all nodes vertically
+    @FXML
+    private ScrollPane scrollPane;  // responsible for allowing users to scroll through messages
     private Client client; // client object to init a connection
     public static String username = "User2"; // users username, initially contains "user1"
     @Override
@@ -47,6 +52,14 @@ public class ClientController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        /* Add a height listener to the main vbox and set that new height to the scroll pane*/
+        messageDisplay.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newHeight) {
+                scrollPane.setVvalue((Double) newHeight);
+            }
+        });
 
         client.receiveMessageFromServer(messageDisplay);  // thread listening for any messages that are sent
     }
@@ -223,7 +236,7 @@ public class ClientController implements Initializable {
         FileInputStream profileImg = null;
 
         try {
-            profileImg = new FileInputStream("C:\\Users\\joand\\IdeaProjects\\virtual-chat2\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+            profileImg = new FileInputStream("C:\\Users\\Ediso\\IdeaProjects\\virtual-chat\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
