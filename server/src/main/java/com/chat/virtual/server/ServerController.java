@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -17,13 +16,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.apache.commons.io.FilenameUtils;
+import java.lang.Math;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -69,7 +65,9 @@ public class ServerController implements Initializable {
         HBox messageAndPfpHBox = new HBox();
         messageAndPfpHBox.setSpacing(10);
         messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
-//        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
+        Circle clientPfpImgContainer = new Circle(15);
+        clientPfpImgContainer.setFill(new ImagePattern(ClientController.pfpImg));
+        messageAndPfpHBox.getChildren().addAll(clientPfpImgContainer, styleMessage(msg, false));
 
         /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
         VBox alignUsernameAndMessageVBox = new VBox();
@@ -217,7 +215,7 @@ public class ServerController implements Initializable {
         FileInputStream profileImg = null;
 
         try {
-            profileImg = new FileInputStream("C:\\Users\\Ediso\\IdeaProjects\\virtual-chat\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+            profileImg = new FileInputStream("C:\\Users\\joand\\IdeaProjects\\virtual-chat2\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

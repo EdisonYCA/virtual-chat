@@ -41,7 +41,7 @@ public class Server {
             public void run() {
                 while(socket.isConnected()) {
                     try {
-                        String messageFromClient = br.readLine(); // read messages when "\n" appears
+                        String messageFromClient = br.readLine();
                         ServerController.displayMessageFromClient(messageFromClient, messageDisplay);
                     } catch (IOException io) {
                         io.printStackTrace();
