@@ -72,37 +72,34 @@ public class ClientController implements Initializable {
         String messageToSend = messageField.getText(); // message entered
 
         if(!messageToSend.isEmpty()) { // ensure message to be sent isn't empty
+            /* Store message from user in Text object */
             messageField.clear();
-
             Text message = new Text(messageToSend);
             message.setFill(Color.WHITE);
 
-            Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN); // green when online, red when offline
-            Text username = new Text(ClientController.username); // needs func
+            /* Create a HBox container to store username */
+            Text username = new Text(ClientController.username);
             username.setFill(Color.WHITE);
-            Text sentMessage = new Text(messageToSend);
-            sentMessage.setFill(Color.WHITE);
+            HBox usernameHBox = new HBox(username);
+            usernameHBox.setAlignment(Pos.TOP_RIGHT);
 
-            // userInfo stores user and user status and aligns them properly
-            HBox userInfo = new HBox(username, userStatus);
-            userInfo.setAlignment(Pos.TOP_RIGHT);
-            HBox.setMargin(userStatus, new Insets(0,0,0,3));
+            /* Create a HBox container to store clients message and profile picture */
+            Circle pfpImgContainer = new Circle(15);
+            pfpImgContainer.setFill(new ImagePattern(pfpImg));
+            HBox messageAndPfpHBox = new HBox();
+            messageAndPfpHBox.setSpacing(5);
+            messageAndPfpHBox.getChildren().addAll(styleMessage(message, true), pfpImgContainer);
+            VBox.setMargin(pfpImgContainer, new Insets(5, 0, 0, 0));
 
-            /* displaying messages with proper alignment */
-            HBox textContainer = new HBox(); //controls the message and profile picture's horizontal alignment
-            Circle pfpImageContainer = new Circle(15);
-            pfpImageContainer.setFill(new ImagePattern(pfpImg));
-            textContainer.getChildren().addAll(styleMessage(message, true), pfpImageContainer);
-            VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
+            /* Create a VBox to align usernameHBox above messageAndPfpHBox */
+            VBox alignUsernameAndMessageVBox = new VBox(); //controls textContainer and the username's vertical alignment
+            alignUsernameAndMessageVBox.getChildren().addAll(usernameHBox, messageAndPfpHBox);
+            alignUsernameAndMessageVBox.setAlignment(Pos.BOTTOM_RIGHT);
 
-            /* display messages*/
-            VBox profileMsg = new VBox(); //controls textContainer and the username's vertical alignment
-            profileMsg.getChildren().addAll(userInfo, textContainer);
-            profileMsg.setAlignment(Pos.BOTTOM_RIGHT);
-
-            HBox messageContainer = styleMessageContainer(true);
-            messageContainer.getChildren().add(profileMsg);
-            messageDisplay.getChildren().add(messageContainer);
+            /* Create HBox to horizontally align alignUsernameAndMessageVBox */
+            HBox alignUsernameAndMessageHBox = styleSendContainer(true);
+            alignUsernameAndMessageHBox.getChildren().add(alignUsernameAndMessageVBox);
+            messageDisplay.getChildren().add(alignUsernameAndMessageHBox);
         }
 
         client.sendMessageToServer(messageToSend);
@@ -116,27 +113,27 @@ public class ClientController implements Initializable {
         Text msg = new Text(message);
         msg.setFill(Color.BLACK);
 
-        /* Create a HBox container to store client username & their online activity */
-        Circle userStatus = new Circle(4, Color.DARKOLIVEGREEN);
-        Text clientUsername = new Text(ClientController.username);
+        /* Create a HBox container to store client username */
+        Text clientUsername = new Text(ServerController.username);
         clientUsername.setFill(Color.WHITE);
-        HBox usernameAndActivityHBox = new HBox(clientUsername, userStatus);
-        usernameAndActivityHBox.setAlignment(Pos.TOP_RIGHT);
-        HBox.setMargin(userStatus, new Insets(0,0,0,3));
+        HBox usernameHBox = new HBox(clientUsername);
+        usernameHBox.setAlignment(Pos.TOP_LEFT);
 
         /* Create a HBox container to store clients message and profile picture */
+        Circle clientPfpImgContainer = new Circle(15);
+        clientPfpImgContainer.setFill(new ImagePattern(ServerController.pfpImg));
         HBox messageAndPfpHBox = new HBox();
-        messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
-        HBox.setMargin(userStatus, new Insets(0,0,3,0));
-       //messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
+        messageAndPfpHBox.setSpacing(5);
+        messageAndPfpHBox.getChildren().addAll(clientPfpImgContainer, styleMessage(msg, false));
+        VBox.setMargin(clientPfpImgContainer, new Insets(5, 0, 0, 0));
 
-        /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
+        /* Create a VBox to align usernameHBox above messageAndPfpHBox */
         VBox alignUsernameAndMessageVBox = new VBox();
-        alignUsernameAndMessageVBox.getChildren().addAll(usernameAndActivityHBox, messageAndPfpHBox);
+        alignUsernameAndMessageVBox.getChildren().addAll(usernameHBox, messageAndPfpHBox);
         alignUsernameAndMessageVBox.setAlignment(Pos.BOTTOM_RIGHT);
 
-        /* Create HBox to horizontally align messageAndPfpHBox & usernameAndActivityHBox stored in alignUsernameAndMessageVBox */
-        HBox alignUsernameAndMessageHBox = styleMessageContainer(false);
+        /* Create HBox to horizontally align alignUsernameAndMessageVBox */
+        HBox alignUsernameAndMessageHBox = styleSendContainer(false);
         alignUsernameAndMessageHBox.getChildren().add(alignUsernameAndMessageVBox);
         Platform.runLater(new Runnable() {
             @Override
@@ -152,7 +149,7 @@ public class ClientController implements Initializable {
      * 2) The HBox containing the user's profile picture and message
      * @return HBox with styling with a left, or right alignment
      * */
-    public static HBox styleMessageContainer(boolean send){
+    public static HBox styleSendContainer(boolean send){
         HBox hbox = new HBox();
 
         if(send) hbox.setAlignment(Pos.CENTER_RIGHT);
