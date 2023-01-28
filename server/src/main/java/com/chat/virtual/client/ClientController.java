@@ -26,25 +26,27 @@ import java.util.ResourceBundle;
 public class ClientController implements Initializable {
 
     @FXML
-    private TextField messageField; // contains message user wants to send
+    private TextField messageField; // contains the message the user types in GUI
     @FXML
-    private VBox messageDisplay; // aligns messages sent/received vertically GUI
-    private Client client;
-    public static String username = ServerController.generateUsername(); // user's username
+    private VBox messageDisplay; // Aligns all nodes vertically
+    private Client client; // client object to init a connection
+    public static String username = "User2"; // users username, initially contains "user1"
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         messageDisplay.setAlignment(Pos.BOTTOM_CENTER); // display all messages from bottom
 
         try {
-            client = new Client(new Socket("localhost", 1234));
+            client = new Client(new Socket("localhost", 1234)); // initialize a new client object on port 1234
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        client.receiveMessageFromServer(messageDisplay);
+        client.receiveMessageFromServer(messageDisplay);  // thread listening for any messages that are sent
     }
 
-    // send message from client -> server and display message on client GUI
+    /**
+     * this method is responsible for the styling, sending, and displaying a message sent from the client user
+     * */
     @FXML
     public void sendMessage(ActionEvent event){
         String messageToSend = messageField.getText(); // message entered
@@ -84,7 +86,9 @@ public class ClientController implements Initializable {
         client.sendMessageToServer(messageToSend);
     }
 
-    // display message from server -> client
+    /**
+     * this method is responsible for displaying and styling a message received from the server user
+     * */
     public static void displayMessageFromServer(String message, VBox messageDisplay){
         /* Store message from user in Text object */
         Text msg = new Text(message);
@@ -120,9 +124,14 @@ public class ClientController implements Initializable {
         });
     }
 
-    // styles the message container
+    /**
+     * this method is responsible for the styling of the HBox containing two HBoxes:
+     * 1) The HBox containing the user's username and online status
+     * 2) The HBox containing the user's profile picture and message
+     * @return HBox with styling with a left, or right alignment
+     * */
     public static HBox styleMessageContainer(boolean send){
-        HBox hbox = new HBox(); // create HBox to store new message in
+        HBox hbox = new HBox();
 
         if(send) hbox.setAlignment(Pos.CENTER_RIGHT);
         else hbox.setAlignment(Pos.CENTER_LEFT);
@@ -132,7 +141,10 @@ public class ClientController implements Initializable {
     }
 
 
-    // style the message to be sent
+    /**
+     * this method is responsible for the styling the message to be sent using a TextFlow object
+     * @return TextFlow containing the message with styling
+     * */
     public static TextFlow styleMessage(Text msg, boolean send){
         TextFlow textFlow = new TextFlow(msg);
 
@@ -151,8 +163,8 @@ public class ClientController implements Initializable {
     }
 
     /**
-     * this method is responsible for creating a default profile image for the user
-     * @return A StackPane instance containing two Objects (Circle & Text)
+     * this method is responsible for setting the default profile image for the user
+     * @return A FileInputStream containing the path of the default profile picture
      * */
     private static StackPane defProfileImg(){
         Text text = new Text("U");
@@ -161,8 +173,6 @@ public class ClientController implements Initializable {
         HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
         return stackPane;
     }
-
-
 
     @FXML
     void uploadImage(){

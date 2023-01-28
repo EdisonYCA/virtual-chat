@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -18,7 +17,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.apache.commons.io.FilenameUtils;
-import java.lang.Math;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,31 +26,31 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ServerController implements Initializable {
     @FXML
-    private TextField messageField; // contains message user wants to send
+    private TextField messageField; // contains the message the user types in GUI
     @FXML
-    private VBox messageDisplay; // aligns messages sent/received vertically GUI
-    private Server server; // server
-    private static Image pfpImg = new Image(defProfileImg());
-
-    private final String username = generateUsername(); // user's username
+    private VBox messageDisplay; // Aligns all nodes vertically
+    private Server server; // server object to init a connection
+    private static Image pfpImg = new Image(defProfileImg()); // users profile picture, initially contains the default picture
+    private String username = "User1"; // users username, initially contains "user1"
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) { // allows manipulation of FXML widgets
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
             server = new Server(new ServerSocket(1234)); // initialize a new server object on port 1234
         } catch(IOException io){
             io.printStackTrace();
         }
 
-        server.receiveMessageFromClient(messageDisplay);
+        server.receiveMessageFromClient(messageDisplay); // thread listening for any messages that are sent
     }
 
-    // display message from client -> server
+    /**
+     * this method is responsible for displaying and styling a message received from the client user
+     * */
     public static void displayMessageFromClient(String message, VBox messageDisplay){
         /* Store message from user in Text object */
         Text msg = new Text(message);
@@ -91,17 +89,9 @@ public class ServerController implements Initializable {
         });
     }
 
-    private Color randomColor() {
-        Random rand = new Random();
-
-        int r = rand.nextInt(0, 255);
-        int g = rand.nextInt(0, 255);
-        int b = rand.nextInt(0, 255);
-
-        return Color.rgb(r,g,b);
-    }
-
-        // send message from server -> client and display message on server GUI
+        /**
+         * this method is responsible for the styling, sending, and displaying a message sent from the server user
+         * */
         @FXML
         public void sendMessage(){
             String messageToSend = messageField.getText(); // message entered
@@ -148,9 +138,14 @@ public class ServerController implements Initializable {
             server.sendMessageToClient(messageToSend);
     }
 
-    // styles the message container
+    /**
+     * this method is responsible for the styling of the HBox containing two HBoxes:
+     * 1) The HBox containing the user's username and online status
+     * 2) The HBox containing the user's profile picture and message
+     * @return HBox with styling with a left, or right alignment
+     * */
     public static HBox styleMessageContainer(boolean send){
-        HBox hbox = new HBox(); // create HBox to store new message in
+        HBox hbox = new HBox();
 
         if(send) hbox.setAlignment(Pos.CENTER_RIGHT);
         else hbox.setAlignment(Pos.CENTER_LEFT);
@@ -159,9 +154,13 @@ public class ServerController implements Initializable {
         return hbox;
     }
 
-    // style the message to be sent
+    /**
+     * this method is responsible for the styling the message to be sent using a TextFlow object
+     * @return TextFlow containing the message with styling
+     * */
     public static TextFlow styleMessage(Text msg, boolean send){
         TextFlow textFlow = new TextFlow(msg);
+
         if(send) {
             textFlow.setStyle("-fx-background-color: #7D52D9; " +
                     "-fx-background-radius: 20px;");
@@ -176,7 +175,10 @@ public class ServerController implements Initializable {
         return textFlow;
     }
 
-    // allows a user to choose a valid image and display it as there profile picture
+    /**
+     * this method is called when the menu item "change profile picture" is clicked. It will allow the user to select a file to upload
+     * as a profile picture, and validate that the file is a valid image.
+     * */
     public void uploadImage() {
         new Thread(new Runnable() {
             @Override
@@ -208,8 +210,8 @@ public class ServerController implements Initializable {
     }
 
     /**
-     * this method is responsible for creating a default profile image for the user
-     * @return A StackPane instance containing two Objects (Circle & Text)
+     * this method is responsible for setting the default profile image for the user
+     * @return A FileInputStream containing the path of the default profile picture
      * */
     private static FileInputStream defProfileImg() {
         FileInputStream profileImg = null;
@@ -223,7 +225,10 @@ public class ServerController implements Initializable {
         return profileImg;
     }
 
-    // returns true if a file ends with an image extensions
+    /**
+     * this method is responsible for parsing a file for its extension.
+     * @return true if the extension is an img, false otherwise.
+     * */
     public boolean accept(File f){
         String extension = FilenameUtils.getExtension(f.getName());
 
@@ -233,20 +238,5 @@ public class ServerController implements Initializable {
             }
         }
         return false;
-    }
-
-    // returns a random username
-    public static String generateUsername(){
-        String username = "user";
-
-        int max = 20000;
-        int min = 10000;
-        int range = max - min + 1;
-
-        // generate random numbers from 20,000 to 10,000
-        int rand = (int)(Math.random() * range) + min;
-        username += Integer.toString(rand);
-
-        return username;
     }
 }
