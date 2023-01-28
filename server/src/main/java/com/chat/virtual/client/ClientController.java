@@ -7,17 +7,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-
+import org.apache.commons.io.FilenameUtils;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -25,6 +31,7 @@ import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
 
+    public static Image pfpImg = new Image(defProfileImg());
     @FXML
     private TextField messageField; // contains message user wants to send
     @FXML
@@ -68,7 +75,9 @@ public class ClientController implements Initializable {
 
             /* displaying messages with proper alignment */
             HBox textContainer = new HBox(); //controls the message and profile picture's horizontal alignment
-            textContainer.getChildren().addAll(styleMessage(message, true), defProfileImg());
+            Circle pfpImageContainer = new Circle(15);
+            pfpImageContainer.setFill(new ImagePattern(pfpImg));
+            textContainer.getChildren().addAll(styleMessage(message, true), pfpImageContainer);
             VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
 
             /* display messages*/
@@ -102,7 +111,7 @@ public class ClientController implements Initializable {
         HBox messageAndPfpHBox = new HBox();
         messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
         HBox.setMargin(userStatus, new Insets(0,0,3,0));
-        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
+       //messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
 
         /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
         VBox alignUsernameAndMessageVBox = new VBox();
@@ -150,23 +159,64 @@ public class ClientController implements Initializable {
         return textFlow;
     }
 
+
+    @FXML
+    public void uploadImage() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JFileChooser file_upload = new JFileChooser();
+
+                // create file filter for only images
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
+                file_upload.setFileFilter(filter);
+
+                int resVal = file_upload.showOpenDialog(null); // returns approved int if user selects a file
+
+                if(resVal == JFileChooser.APPROVE_OPTION){ // user has uploaded a file
+                    try {
+                        FileInputStream file = new FileInputStream(file_upload.getSelectedFile().getAbsolutePath());
+                        if(!accept(new File(file_upload.getSelectedFile().getAbsolutePath()))){ // if file extension is not a valid image extension
+                            System.out.println("invalid");
+                        }
+                        else{
+                            pfpImg = new Image(file);
+                        }
+                    } catch(FileNotFoundException fileNotFoundException){
+                        System.out.println("There was an error opening this file, ensure it hasn't been deleted.");
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+
+    public boolean accept(File f){
+        String extension = FilenameUtils.getExtension(f.getName());
+
+        for(int i = 0; i < ImageIO.getReaderFileSuffixes().length; i++){
+            if(extension.equals(ImageIO.getReaderFileSuffixes()[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * this method is responsible for creating a default profile image for the user
      * @return A StackPane instance containing two Objects (Circle & Text)
      * */
-    private static StackPane defProfileImg(){
-        Text text = new Text("U");
-        text.setFill(Color.BLACK);
-        StackPane stackPane = new StackPane(new Circle(15, Color.BEIGE),text);
-        HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
-        return stackPane;
-    }
+    private static FileInputStream defProfileImg() {
+        FileInputStream profileImg = null;
 
+        try {
+            profileImg = new FileInputStream("C:\\Users\\joand\\IdeaProjects\\virtual-chat2\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-
-    @FXML
-    void uploadImage(){
-
+        return profileImg;
     }
 }
 
