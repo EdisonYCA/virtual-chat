@@ -18,23 +18,26 @@ public class Server {
             bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException io){
-            io.printStackTrace();
-            // close streams
+            closeEverything(socket, br, bw);
         }
     }
 
-    // send message from sever -> client through socket
+    /**
+     * this method is responsible for sending a string message through a buffered writer to the client
+     * */
     public void sendMessageToClient(String message){
         try {
             bw.write(message);
             bw.newLine(); // indicate end of message
             bw.flush();
         }catch (IOException io){
-            io.printStackTrace();
+            closeEverything(socket, br, bw);
         }
     }
 
-    // listen for messages from clients
+    /**
+     * this method is responsible for listening for messages from the client on a thread
+     * */
     public void receiveMessageFromClient(VBox messageDisplay){
         new Thread(new Runnable() {
             @Override
@@ -50,5 +53,27 @@ public class Server {
                 }
             }
         }).start();
+    }
+
+    /**
+     * this method is responsible for listening for closing the server socket, buffered reader, and buffered writer
+     * */
+    public static void closeEverything(Socket socket, BufferedReader bf, BufferedWriter bw){
+        try{
+            if(bf != null){
+                bf.close();
+            }
+
+            if(bw != null){
+                bw.close();
+            }
+
+            if(socket != null){
+                socket.close();
+            }
+
+        } catch(IOException io){
+            io.printStackTrace();
+        }
     }
 }
