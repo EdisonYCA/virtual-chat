@@ -7,17 +7,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-
+import org.apache.commons.io.FilenameUtils;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
@@ -25,26 +31,29 @@ import java.util.ResourceBundle;
 
 public class ClientController implements Initializable {
 
+    public static Image pfpImg = new Image(defProfileImg());
     @FXML
-    private TextField messageField; // contains message user wants to send
+    private TextField messageField; // contains the message the user types in GUI
     @FXML
-    private VBox messageDisplay; // aligns messages sent/received vertically GUI
-    private Client client;
-    public static String username = ServerController.generateUsername(); // user's username
+    private VBox messageDisplay; // Aligns all nodes vertically
+    private Client client; // client object to init a connection
+    public static String username = "User2"; // users username, initially contains "user1"
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         messageDisplay.setAlignment(Pos.BOTTOM_CENTER); // display all messages from bottom
 
         try {
-            client = new Client(new Socket("localhost", 1234));
+            client = new Client(new Socket("localhost", 1234)); // initialize a new client object on port 1234
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        client.receiveMessageFromServer(messageDisplay);
+        client.receiveMessageFromServer(messageDisplay);  // thread listening for any messages that are sent
     }
 
-    // send message from client -> server and display message on client GUI
+    /**
+     * this method is responsible for the styling, sending, and displaying a message sent from the client user
+     * */
     @FXML
     public void sendMessage(ActionEvent event){
         String messageToSend = messageField.getText(); // message entered
@@ -68,7 +77,9 @@ public class ClientController implements Initializable {
 
             /* displaying messages with proper alignment */
             HBox textContainer = new HBox(); //controls the message and profile picture's horizontal alignment
-            textContainer.getChildren().addAll(styleMessage(message, true), defProfileImg());
+            Circle pfpImageContainer = new Circle(15);
+            pfpImageContainer.setFill(new ImagePattern(pfpImg));
+            textContainer.getChildren().addAll(styleMessage(message, true), pfpImageContainer);
             VBox.setMargin(textContainer, new Insets(5, 0, 0, 0));
 
             /* display messages*/
@@ -84,7 +95,9 @@ public class ClientController implements Initializable {
         client.sendMessageToServer(messageToSend);
     }
 
-    // display message from server -> client
+    /**
+     * this method is responsible for displaying and styling a message received from the server user
+     * */
     public static void displayMessageFromServer(String message, VBox messageDisplay){
         /* Store message from user in Text object */
         Text msg = new Text(message);
@@ -102,7 +115,7 @@ public class ClientController implements Initializable {
         HBox messageAndPfpHBox = new HBox();
         messageAndPfpHBox.setAlignment(Pos.TOP_RIGHT);
         HBox.setMargin(userStatus, new Insets(0,0,3,0));
-        messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
+       //messageAndPfpHBox.getChildren().addAll(defProfileImg(), styleMessage(msg, false));
 
         /* Create a VBox to align usernameAndActivityHBox above messageAndPfpHBox */
         VBox alignUsernameAndMessageVBox = new VBox();
@@ -120,9 +133,14 @@ public class ClientController implements Initializable {
         });
     }
 
-    // styles the message container
+    /**
+     * this method is responsible for the styling of the HBox containing two HBoxes:
+     * 1) The HBox containing the user's username and online status
+     * 2) The HBox containing the user's profile picture and message
+     * @return HBox with styling with a left, or right alignment
+     * */
     public static HBox styleMessageContainer(boolean send){
-        HBox hbox = new HBox(); // create HBox to store new message in
+        HBox hbox = new HBox();
 
         if(send) hbox.setAlignment(Pos.CENTER_RIGHT);
         else hbox.setAlignment(Pos.CENTER_LEFT);
@@ -132,7 +150,10 @@ public class ClientController implements Initializable {
     }
 
 
-    // style the message to be sent
+    /**
+     * this method is responsible for the styling the message to be sent using a TextFlow object
+     * @return TextFlow containing the message with styling
+     * */
     public static TextFlow styleMessage(Text msg, boolean send){
         TextFlow textFlow = new TextFlow(msg);
 
@@ -150,23 +171,64 @@ public class ClientController implements Initializable {
         return textFlow;
     }
 
-    /**
-     * this method is responsible for creating a default profile image for the user
-     * @return A StackPane instance containing two Objects (Circle & Text)
-     * */
-    private static StackPane defProfileImg(){
-        Text text = new Text("U");
-        text.setFill(Color.BLACK);
-        StackPane stackPane = new StackPane(new Circle(15, Color.BEIGE),text);
-        HBox.setMargin(stackPane, new Insets(0, 0, 0, 10));
-        return stackPane;
+
+    @FXML
+    public void uploadImage() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JFileChooser file_upload = new JFileChooser();
+
+                // create file filter for only images
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
+                file_upload.setFileFilter(filter);
+
+                int resVal = file_upload.showOpenDialog(null); // returns approved int if user selects a file
+
+                if(resVal == JFileChooser.APPROVE_OPTION){ // user has uploaded a file
+                    try {
+                        FileInputStream file = new FileInputStream(file_upload.getSelectedFile().getAbsolutePath());
+                        if(!accept(new File(file_upload.getSelectedFile().getAbsolutePath()))){ // if file extension is not a valid image extension
+                            System.out.println("invalid");
+                        }
+                        else{
+                            pfpImg = new Image(file);
+                        }
+                    } catch(FileNotFoundException fileNotFoundException){
+                        System.out.println("There was an error opening this file, ensure it hasn't been deleted.");
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
 
+    public boolean accept(File f){
+        String extension = FilenameUtils.getExtension(f.getName());
 
-    @FXML
-    void uploadImage(){
+        for(int i = 0; i < ImageIO.getReaderFileSuffixes().length; i++){
+            if(extension.equals(ImageIO.getReaderFileSuffixes()[i])){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * this method is responsible for setting the default profile image for the user
+     * @return A FileInputStream containing the path of the default profile picture
+     * */
+    private static FileInputStream defProfileImg() {
+        FileInputStream profileImg = null;
+
+        try {
+            profileImg = new FileInputStream("C:\\Users\\joand\\IdeaProjects\\virtual-chat2\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return profileImg;
     }
 }
 
