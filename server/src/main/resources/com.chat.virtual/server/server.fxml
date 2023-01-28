@@ -37,7 +37,7 @@
       </children>
        </HBox>
    
-       <ScrollPane id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="339.0" prefWidth="600.0" styleClass="scrollPane" GridPane.rowIndex="1">
+       <ScrollPane fx:id="scrollPane" id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="339.0" prefWidth="600.0" styleClass="scrollPane" GridPane.rowIndex="1">
       <content>
               <VBox fx:id="messageDisplay" alignment="BOTTOM_LEFT" minWidth="482.0" prefHeight="16.0" prefWidth="482.0" styleClass="scrollPane">
                   <padding>
