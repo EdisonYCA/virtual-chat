@@ -243,4 +243,23 @@ public class ServerController implements Initializable {
         }
         return false;
     }
+
+    /**
+     * this method is responsible for prompting and validating the user for a username when the change
+     * username button is clicked
+     * */
+    @FXML
+    public void changeUsername(){
+        JFrame f = new JFrame();
+        String name = JOptionPane.showInputDialog(f, "Enter a username: ");
+
+        if(name.length() > 10){
+            JOptionPane.showMessageDialog(f,"Username length is greater than 10!","Alert", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            JOptionPane.showMessageDialog(f,"Username successfully updated!","Alert", JOptionPane.WARNING_MESSAGE);
+            username = name;
+        }
+    }
+
 }
