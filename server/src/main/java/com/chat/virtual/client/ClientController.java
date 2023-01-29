@@ -233,7 +233,7 @@ public class ClientController implements Initializable {
         FileInputStream profileImg = null;
 
         try {
-            profileImg = new FileInputStream("C:\\Users\\Ediso\\IdeaProjects\\virtual-chat\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
+            profileImg = new FileInputStream(System.getProperty("user.dir") + "\\server\\src\\main\\resources\\com.chat.virtual\\assets\\defaultPfpLogo.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
