@@ -69,7 +69,7 @@
                             </iconColor></FontIcon>
                     </graphic>
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Change Username" />
+                        <MenuItem onAction="#changeUsername" mnemonicParsing="false" text="Change Username" />
                         <MenuItem onAction="#uploadImage" mnemonicParsing="false" text="Change Profile Image" />
                     </items>
                 </Menu>
